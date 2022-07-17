@@ -1,4 +1,5 @@
 from fastapi import Depends, FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.db import User, create_db_and_tables
 from app.users.users import current_active_user
@@ -8,6 +9,19 @@ from app.recipes.routers import router as recipes_router
 app = FastAPI()
 app.include_router(users_router)
 app.include_router(recipes_router)
+
+origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/authenticated-route")
 async def authenticated_route(user: User = Depends(current_active_user)):
