@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import {
   FormErrorMessage,
@@ -8,6 +9,7 @@ import {
   Button,
   Box,
 } from '@chakra-ui/react';
+import api from '../../services/api';
 
 const LoginForm: React.FC = () => {
   const {
@@ -15,14 +17,15 @@ const LoginForm: React.FC = () => {
     register,
     formState: { errors, isSubmitting },
   }: any = useForm();
+  const navigate = useNavigate();
 
-  const onSubmit = (values: any) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        alert(JSON.stringify(values, null, 2));
-        resolve('Form submission success');
-      }, 3000);
-    });
+  const onSubmit = async (values: any) => {
+    const { username, password } = values;
+    const response = await api.auth.login(username, password);
+    if (response.status === 200) {
+      console.log('Usuario autenticado');
+      navigate('/', { replace: true });
+    }
   };
 
   return (
@@ -34,10 +37,10 @@ const LoginForm: React.FC = () => {
           <Box m={4}>
             <FormLabel htmlFor="email">Email</FormLabel>
             <Input
-              id="email"
+              id="username"
               placeholder="Email"
               type="email"
-              {...register('email', {
+              {...register('username', {
                 required: 'Email es requerido',
               })}
             />
