@@ -17,4 +17,13 @@ export class RecipesApi {
       throw error;
     }
   }
+
+  async meRecipes(): Promise<AxiosResponse> {
+    try {
+      const response = await this.api.axios.get('/recipes/me');
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

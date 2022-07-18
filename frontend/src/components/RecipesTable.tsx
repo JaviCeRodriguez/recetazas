@@ -10,7 +10,29 @@ import {
   Tr,
 } from '@chakra-ui/react';
 
-const RecipesTable: React.FC = (): JSX.Element => {
+interface RecipeType {
+  created_at: string;
+  id: number;
+  image_url: string;
+  ingredients: string;
+  instructions: string;
+  is_coocked: boolean;
+  review: number;
+  title: string;
+  updated_at: string;
+  user_id: string;
+}
+
+const RecipesTable: React.FC<{ recipes: RecipeType[] }> = ({ recipes }) => {
+  // generate emoji stars based on number review
+  const generateStars = (review: number) => {
+    let stars = '';
+    for (let i = 0; i < review; i++) {
+      stars += '⭐';
+    }
+    return stars;
+  };
+
   return (
     <TableContainer>
       <Table variant="simple">
@@ -21,13 +43,17 @@ const RecipesTable: React.FC = (): JSX.Element => {
             <Th>Cocinado antes</Th>
           </Tr>
         </Thead>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((recipe: number) => (
-          <Tbody key={`recipe-${recipe}`}>
+        {recipes.map((recipe: RecipeType) => (
+          <Tbody key={`recipe-${recipe.id}`}>
             <Tr>
-              <Td>Melodía de bayas mixtas</Td>
-              <Td>⭐⭐⭐⭐</Td>
+              <Td>{recipe.title}</Td>
+              <Td>{generateStars(recipe.review)}</Td>
               <Td>
-                <Switch colorScheme="green" size="lg" />
+                <Switch
+                  colorScheme="green"
+                  size="lg"
+                  defaultChecked={recipe.is_coocked}
+                />
               </Td>
             </Tr>
           </Tbody>
