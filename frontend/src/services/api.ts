@@ -2,6 +2,7 @@ import axios, { AxiosInstance } from 'axios';
 
 import { ApiConfig, DEFAULT_API_CONFIG } from './api-config';
 import { AuthApi } from './auth';
+import { RecipesApi } from './recipes';
 
 export class Api {
   axios!: AxiosInstance;
@@ -27,13 +28,13 @@ export class Api {
 
   setToken(token: string) {
     if (token) {
-      this.axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+      this.axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      this.token = token;
     }
-    this.token = token;
   }
 
   removeToken() {
-    delete this.axios.defaults.headers.common.Authorization;
+    delete this.axios.defaults.headers.common['Authorization'];
     this.token = null;
   }
 }
@@ -43,6 +44,7 @@ baseApi.setup();
 const api = {
   base: baseApi,
   auth: new AuthApi(baseApi),
+  recipes: new RecipesApi(baseApi),
 };
 
 export default api;

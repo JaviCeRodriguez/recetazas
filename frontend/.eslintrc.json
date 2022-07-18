@@ -33,6 +33,7 @@
     }
   },
   "rules": {
+    "dot-notation": "off",
     "no-use-before-define": "off",
     "react/react-in-jsx-scope": "off",
     "react/jsx-filename-extension": ["warn", { "extensions": [".tsx"] }],

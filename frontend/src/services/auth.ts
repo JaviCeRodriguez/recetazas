@@ -56,6 +56,9 @@ export class AuthApi {
           'Content-Type': 'multipart/form-data',
         },
       });
+      if (response.status === 200) {
+        this.api.setToken(response.data.access_token);
+      }
       return response;
     } catch (error) {
       throw error;
